@@ -1,15 +1,46 @@
 const GRID_GAP = 10;
 
-const getGridPosition = (location) => {
-    let newLocation = JSON.parse(JSON.stringify(location));
-    newLocation.x = Math.round(newLocation.x / GRID_GAP) * GRID_GAP;
-    newLocation.y = Math.round(newLocation.y / GRID_GAP) * GRID_GAP;
-
-    return newLocation;
-}
-
 const initCanvas = () => {
+
+    const initializeCanvas = () => {
+        BGC.strokeStyle="#666666";
+        BGC.lineWidth = 1;
+        for(let i = 0; i <= screenWidth; i += 10) {
+            BGC.beginPath();
+            BGC.moveTo(i, 0);
+            BGC.lineTo(i, screenHeight);
+            BGC.stroke();
+        }
+        for(let i = 0; i <= screenHeight; i += 10) {
+            BGC.beginPath();
+            BGC.moveTo(0, i);
+            BGC.lineTo(screenWidth, i);
+            BGC.stroke();
+        }
+    }
+    const getGridPosition = (location) => {
+        let newLocation = JSON.parse(JSON.stringify(location));
+        newLocation.x = Math.round(newLocation.x / GRID_GAP) * GRID_GAP;
+        newLocation.y = Math.round(newLocation.y / GRID_GAP) * GRID_GAP;
+
+        return newLocation;
+    }
+    const drawDC = () => {
+        DC.clearRect(0, 0, screenWidth, screenHeight);
+        for(let i = 0; i < DCElements.length; i++) {
+            DC.beginPath();
+            DC.lineWidth = DCElements[i].lineWidth || 1;
+            DC.strokeStyle = DCElements[i].selected ? '#61dafb' : (DCElements[i].strokeStyle || '#ffffff');
+            DC.fillStyle = DCElements[i].fillStyle || null;
+            DC.rect(DCElements[i].startPositionX, DCElements[i].startPositionY, DCElements[i].width, DCElements[i].height);
+            DC.stroke();
+        }
+
+    }
+
     let createMode = false;
+    const body = document.querySelector('body');
+    let mouseLocation = {x: 0, y: 0};
 
     const BGCanvas = document.querySelector('#backgroundCanvas');
     const BGC = BGCanvas.getContext('2d');
@@ -18,27 +49,13 @@ const initCanvas = () => {
     const NDCanvas = document.querySelector('#newDrawCanvas');
     const NDC = NDCanvas.getContext('2d');
 
+    const DCElements = [];
+
     let screenWidth = BGCanvas.offsetWidth;
     let screenHeight = BGCanvas.offsetHeight;
 
-    BGC.strokeStyle="#666666";
-    BGC.lineWidth = 1;
-    for(let i = 0; i <= screenWidth; i += 10) {
-        BGC.beginPath();
-        BGC.moveTo(i, 0);
-        BGC.lineTo(i, screenHeight);
-        BGC.stroke();
-    }
-    for(let i = 0; i <= screenHeight; i += 10) {
-        BGC.beginPath();
-        BGC.moveTo(0, i);
-        BGC.lineTo(screenWidth, i);
-        BGC.stroke();
-    }
+    initializeCanvas();
 
-
-    const body = document.querySelector('body');
-    let mouseLocation = {x: 0, y: 0};
     body.addEventListener('keydown', (e) => {
         if(e.key === 'n' || e.key === 'N') {
             createMode = true;
@@ -63,12 +80,21 @@ const initCanvas = () => {
         if(createMode) {
             const gridPosition = getGridPosition(mouseLocation);
             NDC.clearRect(0, 0, screenWidth, screenHeight);
-            DC.beginPath();
-            DC.lineWidth = 1;
-            DC.strokeStyle = "#ffffff";
-            DC.rect(gridPosition.x, gridPosition.y, 100, 100);
-            DC.stroke();
+            DCElements.push({lineWidth: 1, strokeStyle: '#ffffff', fillStyle: "",startPositionX: gridPosition.x, startPositionY: gridPosition.y, width: 100, height: 100, selected: false });
+            drawDC();
             createMode = false;
+        } else {
+            for(let i = 0; i < DCElements.length; i++) {
+                DCElements[i].selected = false;
+            }
+            for(let i = 0; i < DCElements.length; i++) {
+                if(DCElements[i].startPositionX <= mouseLocation.x && DCElements[i].startPositionY <= mouseLocation.y && DCElements[i].startPositionX + DCElements[i].width >= mouseLocation.x && DCElements[i].startPositionY + DCElements[i].height >= mouseLocation.y) {
+                    DCElements[i].selected = true;
+                    break;
+                }
+            }
+            drawDC();
         }
+
     })
 }
