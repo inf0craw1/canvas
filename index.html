@@ -3,21 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Canvas</title>
-    <script src="./canvas.js"></script>
     <style>
         * {
             box-sizing: border-box;
+            padding: 0;
+            margin: 0;
         }
-        #canvas {
-            border: 1px solid black;
+        body {
+            background-color: #0d1117;
+            width: 100vw;
+            height: 100vh;
+        }
+        .canvas-wrapper {
+            position: relative;
+            width: 1920px;
+            height: 1080px;
+        }
+        .canvas-wrapper canvas {
+            position: absolute;
         }
     </style>
 
 </head>
-<body onload="initCanvas();">
+<body onload="initCanvas()">
+    </div>
+    <div class="canvas-wrapper">
+        <canvas id="backgroundCanvas" width="1920px" height="1080px"></canvas>
+        <canvas id="drawCanvas" width="1920px" height="1080px"></canvas>
+        <canvas id="newDrawCanvas" width="1920px" height="1080px"></canvas>
+    </div>
 
-  <canvas id="canvas" width="300" height="300"></canvas>
-
+    <script src="./canvas.js"></script>
 
 </body>
 </html>
