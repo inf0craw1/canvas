@@ -28,6 +28,9 @@ const initCanvas = () => {
     const drawDC = () => {
         DC.clearRect(0, 0, screenWidth, screenHeight);
         for(let i = 0; i < DCElements.length; i++) {
+            if(DCElements[i].selected) {
+                continue;
+            }
             DC.beginPath();
             DC.lineWidth = DCElements[i].lineWidth || 1;
             DC.strokeStyle = DCElements[i].selected ? '#61dafb' : (DCElements[i].strokeStyle || '#ffffff');
@@ -35,8 +38,24 @@ const initCanvas = () => {
             DC.rect(DCElements[i].startPositionX, DCElements[i].startPositionY, DCElements[i].width, DCElements[i].height);
             DC.stroke();
         }
-
     }
+    const drawNDC = () => {
+        NDC.clearRect(0, 0, screenWidth, screenHeight);
+        for(let i = 0; i < NDCElements.length; i++) {
+            NDC.beginPath();
+            NDC.lineWidth = NDCElements[i].lineWidth || 1;
+            NDC.strokeStyle = NDCElements[i].selected ? '#61dafb' : (NDCElements[i].strokeStyle || '#ffffff');
+            NDC.fillStyle = NDCElements[i].fillStyle || null;
+            NDC.rect(NDCElements[i].startPositionX, NDCElements[i].startPositionY, NDCElements[i].width, NDCElements[i].height);
+            NDC.stroke();
+        }
+    }
+    const unselectAll = () => {
+        for(let i = 0; i < DCElements.length; i++) {
+            DCElements[i].selected = false;
+        }
+        drawDC();
+    };
 
     let createMode = false;
     const body = document.querySelector('body');
@@ -50,6 +69,7 @@ const initCanvas = () => {
     const NDC = NDCanvas.getContext('2d');
 
     const DCElements = [];
+    const NDCElements = [];
 
     let screenWidth = BGCanvas.offsetWidth;
     let screenHeight = BGCanvas.offsetHeight;
@@ -61,6 +81,9 @@ const initCanvas = () => {
             createMode = true;
         }
         if(e.key === 'Escape') {
+            unselectAll();
+            drawDC();
+            drawNDC();
             createMode = false;
         }
     })
@@ -84,12 +107,12 @@ const initCanvas = () => {
             drawDC();
             createMode = false;
         } else {
-            for(let i = 0; i < DCElements.length; i++) {
-                DCElements[i].selected = false;
-            }
+            unselectAll();
             for(let i = 0; i < DCElements.length; i++) {
                 if(DCElements[i].startPositionX <= mouseLocation.x && DCElements[i].startPositionY <= mouseLocation.y && DCElements[i].startPositionX + DCElements[i].width >= mouseLocation.x && DCElements[i].startPositionY + DCElements[i].height >= mouseLocation.y) {
                     DCElements[i].selected = true;
+                    NDCElements.push(DCElements[i]);
+                    drawNDC();
                     break;
                 }
             }
