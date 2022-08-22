@@ -6,7 +6,7 @@ n: draw mode. (default rectangle).
 ESC: exit draw mode.  
 
 ## On Draw Mode
-click: draw current position.  
+click: draw element at current position.  
 
 ## On Plain Mode
 click: select element.
