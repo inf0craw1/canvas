@@ -8,5 +8,6 @@ ESC: exit draw mode.
 ## On Draw Mode
 click: draw element at current position.  
 
-## On Plain Mode
-click: select element.
+## On Select Mode
+click: select element.  
+Backspace: Remove select element.  
