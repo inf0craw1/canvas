@@ -68,8 +68,8 @@ const initCanvas = () => {
     const NDCanvas = document.querySelector('#newDrawCanvas');
     const NDC = NDCanvas.getContext('2d');
 
-    const DCElements = [];
-    const NDCElements = [];
+    let DCElements = [];
+    let NDCElements = [];
 
     let screenWidth = BGCanvas.offsetWidth;
     let screenHeight = BGCanvas.offsetHeight;
@@ -86,6 +86,20 @@ const initCanvas = () => {
             drawNDC();
             createMode = false;
         }
+        if(e.key === 'Backspace') {
+            let newDCElements = [];
+            if(!createMode) {
+               for(let i = 0; i < DCElements.length; i++) {
+                   if(!DCElements[i].selected) {
+                       newDCElements.push(DCElements[i]);
+                   }
+               }
+           }
+            DCElements = newDCElements;
+            NDCElements = [];
+            drawDC();
+            drawNDC();
+        }
     })
     body.addEventListener('mousemove', (e) => {
         mouseLocation = {x: e.layerX, y: e.layerY};
@@ -99,7 +113,7 @@ const initCanvas = () => {
             NDC.stroke();
         }
     })
-    body.addEventListener('click', (e) => {
+    body.addEventListener('click', () => {
         if(createMode) {
             const gridPosition = getGridPosition(mouseLocation);
             NDC.clearRect(0, 0, screenWidth, screenHeight);
