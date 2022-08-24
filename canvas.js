@@ -114,6 +114,7 @@ const initCanvas = () => {
         }
     })
     body.addEventListener('click', (e) => {
+        console.log(e)
         if(createMode) {
             const gridPosition = getGridPosition(mouseLocation);
             NDC.clearRect(0, 0, screenWidth, screenHeight);
@@ -121,7 +122,7 @@ const initCanvas = () => {
             drawDC();
             createMode = false;
         } else {
-            if(e.shiftKey) {
+            if(!e.shiftKey) {
                 NDCElements = [];
                 unselectAll();
                 drawNDC();
