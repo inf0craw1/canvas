@@ -10,4 +10,5 @@ click: draw element at current position.
 
 ## On Select Mode
 click: select element.  
+shift + click: select additional element.  
 Backspace: Remove select element.  
