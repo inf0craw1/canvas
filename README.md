@@ -2,7 +2,7 @@
 Live Demo: [https://inf0craw1.github.io/canvas/](https://inf0craw1.github.io/canvas/).
 
 ## Change Mode
-n: draw mode. (default rectangle).  
+n: draw mode. (default: rectangle).  
 ESC: exit draw mode.  
 
 ## On Draw Mode
