@@ -1,5 +1,5 @@
 # Canvas
-You can try at [https://inf0craw1.github.io/canvas/](https://inf0craw1.github.io/canvas/).
+Live Demo: [https://inf0craw1.github.io/canvas/](https://inf0craw1.github.io/canvas/).
 
 ## Change Mode
 n: draw mode. (default rectangle).  
