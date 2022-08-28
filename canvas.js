@@ -127,6 +127,7 @@ const initCanvas = () => {
         }
     })
     body.addEventListener('click', (e) => {
+        const gridPosition = getGridPosition(mouseLocation);
         if(createMode) {
             const gridPosition = getGridPosition(mouseLocation);
             NDC.clearRect(0, 0, screenWidth, screenHeight);
@@ -140,7 +141,7 @@ const initCanvas = () => {
                 drawNDC();
             }
             for(let i = 0; i < DCElements.length; i++) {
-                if(DCElements[i].startPositionX <= mouseLocation.x && DCElements[i].startPositionY <= mouseLocation.y && DCElements[i].startPositionX + DCElements[i].width >= mouseLocation.x && DCElements[i].startPositionY + DCElements[i].height >= mouseLocation.y) {
+                if(DCElements[i].startPositionX <= gridPosition.x && DCElements[i].startPositionY <= gridPosition.y && DCElements[i].startPositionX + DCElements[i].width >= gridPosition.x && DCElements[i].startPositionY + DCElements[i].height >= gridPosition.y) {
                     DCElements[i].selected = true;
                     NDCElements.push(DCElements[i]);
                     drawNDC();
