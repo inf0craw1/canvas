@@ -70,7 +70,7 @@ const initCanvas = () => {
     const CCanvas = document.querySelector('#cursorCanvas');
     const CC = CCanvas.getContext('2d');
 
-    const DCElements = [];
+    let DCElements = [];
     let NDCElements = [];
 
     let screenWidth = BGCanvas.offsetWidth;
@@ -88,6 +88,20 @@ const initCanvas = () => {
             drawDC();
             drawNDC();
             createMode = false;
+        }
+        if(e.key === 'Backspace') {
+            let newDCElements = [];
+            if(!createMode) {
+                for(let i = 0; i < DCElements.length; i++) {
+                    if(!DCElements[i].selected) {
+                        newDCElements.push(DCElements[i]);
+                    }
+                }
+            }
+            DCElements = newDCElements;
+            NDCElements = [];
+            drawDC();
+            drawNDC();
         }
     })
     body.addEventListener('mousemove', (e) => {
@@ -120,9 +134,11 @@ const initCanvas = () => {
             drawDC();
             createMode = false;
         } else {
-            unselectAll();
-            NDC.clearRect(0, 0, screenWidth, screenHeight);
-            NDCElements = [];
+            if(!e.shiftKey) {
+                NDCElements = [];
+                unselectAll();
+                drawNDC();
+            }
             for(let i = 0; i < DCElements.length; i++) {
                 if(DCElements[i].startPositionX <= mouseLocation.x && DCElements[i].startPositionY <= mouseLocation.y && DCElements[i].startPositionX + DCElements[i].width >= mouseLocation.x && DCElements[i].startPositionY + DCElements[i].height >= mouseLocation.y) {
                     DCElements[i].selected = true;
