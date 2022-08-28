@@ -1,12 +1,14 @@
 # Canvas
-You can try at [https://inf0craw1.github.io/canvas/](https://inf0craw1.github.io/canvas/).
+Live Demo: [https://inf0craw1.github.io/canvas/](https://inf0craw1.github.io/canvas/).
 
 ## Change Mode
-n: draw mode. (default rectangle).  
+n: draw mode. (default: rectangle).  
 ESC: exit draw mode.  
 
 ## On Draw Mode
-click: draw current position.  
+click: draw element at current position.  
 
-## On Plain Mode
-click: select element.
+## On Select Mode
+click: select element.  
+shift + click: select additional element.  
+Backspace: Remove select element.  
