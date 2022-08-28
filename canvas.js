@@ -67,9 +67,11 @@ const initCanvas = () => {
     const DC = DCanvas.getContext('2d');
     const NDCanvas = document.querySelector('#newDrawCanvas');
     const NDC = NDCanvas.getContext('2d');
+    const CCanvas = document.querySelector('#cursorCanvas');
+    const CC = CCanvas.getContext('2d');
 
     const DCElements = [];
-    const NDCElements = [];
+    let NDCElements = [];
 
     let screenWidth = BGCanvas.offsetWidth;
     let screenHeight = BGCanvas.offsetHeight;
@@ -79,6 +81,7 @@ const initCanvas = () => {
     body.addEventListener('keydown', (e) => {
         if(e.key === 'n' || e.key === 'N') {
             createMode = true;
+            CC.clearRect(0, 0, screenWidth, screenHeight);
         }
         if(e.key === 'Escape') {
             unselectAll();
@@ -97,6 +100,16 @@ const initCanvas = () => {
             NDC.strokeStyle = "#ffffff";
             NDC.rect(gridPosition.x, gridPosition.y, 100, 100);
             NDC.stroke();
+        } else {
+            const gridPosition = getGridPosition(mouseLocation);
+            CC.clearRect(0, 0, screenWidth, screenHeight);
+            CC.beginPath();
+
+            CC.arc(gridPosition.x, gridPosition.y, 3, 0, 2 * Math.PI);
+            CC.strokeStyle = "#ffffff";
+            CC.fillStyle = "#ffffff";
+            CC.fill();
+            CC.stroke();
         }
     })
     body.addEventListener('click', (e) => {
@@ -108,6 +121,8 @@ const initCanvas = () => {
             createMode = false;
         } else {
             unselectAll();
+            NDC.clearRect(0, 0, screenWidth, screenHeight);
+            NDCElements = [];
             for(let i = 0; i < DCElements.length; i++) {
                 if(DCElements[i].startPositionX <= mouseLocation.x && DCElements[i].startPositionY <= mouseLocation.y && DCElements[i].startPositionX + DCElements[i].width >= mouseLocation.x && DCElements[i].startPositionY + DCElements[i].height >= mouseLocation.y) {
                     DCElements[i].selected = true;
